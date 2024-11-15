@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
-import { Paperclip } from "lucide-react";
+import { Paperclip, Send } from "lucide-react";
 import { FileAttachment } from "@/components/file-attachment";
 
 export default function Component() {
@@ -65,9 +65,15 @@ export default function Component() {
 
   // Handle file selection through the file input
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      setAttachments((prev) => [...prev, ...Array.from(e.target.files!)]);
-    }
+    const files = e.target.files;
+    if (!files) return;
+
+    // Convert FileList to Array and append to existing attachments
+    const newFiles = Array.from(files);
+    setAttachments((prev) => [...prev, ...newFiles]);
+
+    // Reset the file input value after processing
+    e.target.value = "";
   };
 
   // Clear the current attachment and reset file input
@@ -79,12 +85,30 @@ export default function Component() {
   };
 
   // Handle form submission
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Submitting:", { message, attachments });
-    // TODO: Implement backend integration here
-    setMessage("");
-    setAttachments([]);
+
+    try {
+      console.log("Submitting:", { message, attachments });
+      // TODO: Implement backend integration here
+      setMessage("");
+      setAttachments([]);
+
+      // Reset the file input value
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
+    } catch (error) {
+      console.error("Error submitting message:", error);
+    }
+  };
+
+  // Add keyboard event handler for Enter key
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      handleSubmit(e);
+    }
   };
 
   return (
@@ -117,6 +141,7 @@ export default function Component() {
               placeholder="Ask v0 a question..."
               value={message}
               onChange={(e) => setMessage(e.target.value)}
+              onKeyDown={handleKeyDown} // Add keyboard event handler
               className="w-full resize-none overflow-y-auto shadow-none border-none 
                 focus-visible:ring-0 focus-visible:ring-offset-0 px-4 pt-4 -mr-2 
                 font-sans !text-base min-h-[72px] max-h-[240px] leading-6
@@ -158,8 +183,10 @@ export default function Component() {
                 <Paperclip className="h-4 w-4" />
               </Button>
             </div>
-            {/* Submit button */}
-            <Button type="submit">Send</Button>
+            {/* Replace text button with icon button */}
+            <Button type="submit" size="icon">
+              <Send className="h-4 w-4" />
+            </Button>
           </div>
         </form>
       </CardContent>
