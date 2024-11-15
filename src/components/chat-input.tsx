@@ -144,9 +144,7 @@ export default function Component() {
               onKeyDown={handleKeyDown} // Add keyboard event handler
               className="w-full resize-none overflow-y-auto shadow-none border-none 
                 focus-visible:ring-0 focus-visible:ring-offset-0 px-4 pt-4 -mr-2 
-                font-sans !text-base min-h-[72px] max-h-[240px] leading-6
-                scrollbar-thin scrollbar-thumb-gray-300 !scrollbar-track-none 
-                hover:scrollbar-thumb-gray-400 transition-colors"
+                font-sans !text-base min-h-[72px] max-h-[240px] leading-6 transition-colors"
             />
             {/* 
               <Textarea
