@@ -4,14 +4,15 @@ import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
-import { X, Paperclip } from "lucide-react";
+import { Paperclip } from "lucide-react";
+import { FileAttachment } from "@/components/file-attachment";
 
 export default function Component() {
   // State management for the chat input
   // message: stores the current text input value
-  // attachment: stores the currently selected file (if any)
+  // attachments: stores the currently selected files (if any)
   const [message, setMessage] = useState("");
-  const [attachment, setAttachment] = useState<File | null>(null);
+  const [attachments, setAttachments] = useState<File[]>([]);
 
   // Refs to directly access DOM elements
   // textareaRef: used for auto-resizing the input field
@@ -57,22 +58,21 @@ export default function Component() {
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     e.stopPropagation();
-    // Set the first dropped file as the attachment
-    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-      setAttachment(e.dataTransfer.files[0]);
+    if (e.dataTransfer.files) {
+      setAttachments((prev) => [...prev, ...Array.from(e.dataTransfer.files)]);
     }
   };
 
   // Handle file selection through the file input
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      setAttachment(e.target.files[0]);
+    if (e.target.files) {
+      setAttachments((prev) => [...prev, ...Array.from(e.target.files!)]);
     }
   };
 
   // Clear the current attachment and reset file input
-  const handleRemoveAttachment = () => {
-    setAttachment(null);
+  const handleRemoveAttachment = (fileToRemove: File) => {
+    setAttachments((prev) => prev.filter((file) => file !== fileToRemove));
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
     }
@@ -81,38 +81,27 @@ export default function Component() {
   // Handle form submission
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Submitting:", { message, attachment });
+    console.log("Submitting:", { message, attachments });
     // TODO: Implement backend integration here
-    // Reset form after submission
     setMessage("");
-    setAttachment(null);
+    setAttachments([]);
   };
 
   return (
     // Main container card with fixed width and centered alignment
-    <Card className="w-[800px] mx-auto shadow-none border-neutral-200">
-      <CardContent className="py-4 px-0">
-        <form onSubmit={handleSubmit} className="space-y-2">
-          {/* Attachment preview section - only shown when a file is attached */}
-          {attachment && (
-            <div className="flex items-center justify-between bg-muted p-2 rounded-md">
-              <div className="flex items-center space-x-2">
-                <Paperclip className="h-4 w-4" />
-                <span className="text-sm">{attachment.name}</span>
-                {/* Display file size in kB */}
-                <span className="text-xs text-muted-foreground">
-                  {(attachment.size / 1024).toFixed(2)}kB
-                </span>
-              </div>
-              {/* Remove attachment button */}
-              <Button
-                type="button"
-                variant="ghost"
-                size="icon"
-                onClick={handleRemoveAttachment}
-              >
-                <X className="h-4 w-4" />
-              </Button>
+    <Card className="w-[800px] mx-auto shadow-none border-neutral-200 overflow-hidden">
+      <CardContent className="pb-4 px-0">
+        <form onSubmit={handleSubmit}>
+          {/* Attachment preview section */}
+          {attachments.length > 0 && (
+            <div className="flex flex-row flex-wrap gap-2 px-4 py-4 bg-neutral-50">
+              {attachments.map((file, index) => (
+                <FileAttachment
+                  key={`${file.name}-${index}`}
+                  file={file}
+                  onRemove={handleRemoveAttachment}
+                />
+              ))}
             </div>
           )}
 
@@ -129,7 +118,7 @@ export default function Component() {
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               className="w-full resize-none overflow-y-auto shadow-none border-none 
-                focus-visible:ring-0 focus-visible:ring-offset-0 px-4 pt-0 -mr-2 
+                focus-visible:ring-0 focus-visible:ring-offset-0 px-4 pt-4 -mr-2 
                 font-sans !text-base min-h-[72px] max-h-[240px] leading-6
                 scrollbar-thin scrollbar-thumb-gray-300 !scrollbar-track-none 
                 hover:scrollbar-thumb-gray-400 transition-colors"
