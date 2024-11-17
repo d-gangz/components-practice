@@ -56,7 +56,17 @@ export default {
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
       },
+      keyframes: {
+        "spin-fade": {
+          "0%": { opacity: "1" },
+          "100%": { opacity: "0.15" },
+        },
+      },
+      animation: {
+        "spin-fade": "spin-fade 1.2s linear infinite",
+      },
     },
   },
+  /* eslint-disable @typescript-eslint/no-require-imports */
   plugins: [require("tailwindcss-animate"), require("tailwind-scrollbar")],
 } satisfies Config;
