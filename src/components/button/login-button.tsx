@@ -39,10 +39,12 @@ export default function LoginButton() {
         }}
       >
         {/* AnimatePresence handles enter/exit animations for components, mode="wait" ensures the exiting component finishes its animation before the entering component starts, initial={false} prevents animation on first render, only animates on state changes */}
-        <AnimatePresence mode="wait" initial={false}>
+        <AnimatePresence mode="popLayout" initial={false}>
           <motion.span
             className="flex w-full items-center justify-center text-white [text-shadow:0_1px_1.5px_rgba(0,0,0,0.16)]"
             key={buttonState}
+            // Prev it has this weird bounce. so setting this custom transition makes it smoother.
+            transition={{ type: "spring", bounce: 0, duration: 0.3 }}
             initial={{ opacity: 0, y: -25 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 25 }}
