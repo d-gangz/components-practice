@@ -110,6 +110,7 @@ export default function FeedbackComponentCSS() {
             </motion.span>
 
             {formState === "success" ? (
+              // Success Message
               <div className="flex h-full flex-col items-center justify-center">
                 <svg
                   width="32"
@@ -139,6 +140,7 @@ export default function FeedbackComponentCSS() {
                 </p>
               </div>
             ) : (
+              // Feedback Form
               <form
                 onSubmit={(e) => {
                   e.preventDefault();
@@ -229,7 +231,7 @@ export default function FeedbackComponentCSS() {
                   <div className="flex justify-end px-2.5 pb-2">
                     <button
                       type="submit"
-                      className="flex h-6 w-26 items-center justify-center overflow-hidden rounded-md bg-gradient-to-b from-[#1994ff] to-[#157cff] text-xs font-semibold text-white shadow-[0_0_1px_1px_rgba(255,255,255,0.08)_inset,0_1px_1.5px_0_rgba(0,0,0,0.32),0_0_0_0.5px_#1a94ff]"
+                      className="flex h-6 w-32 items-center justify-center overflow-hidden rounded-md bg-gradient-to-b from-[#1994ff] to-[#157cff] text-xs font-semibold text-white shadow-[0_0_1px_1px_rgba(255,255,255,0.08)_inset,0_1px_1.5px_0_rgba(0,0,0,0.32),0_0_0_0.5px_#1a94ff]"
                     >
                       <AnimatePresence mode="popLayout" initial={false}>
                         <motion.span
