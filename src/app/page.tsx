@@ -1,7 +1,8 @@
 // import LoginButton from "@/components/button/login-button";
 // import ChatInput from "@/components/chat-input";
 // import AnimatedModals from "@/components/animated-modals/animated-modals";
-import DynamicHeight from "@/components/dynamic-height/dynamic-height";
+// import DynamicHeight from "@/components/dynamic-height/dynamic-height";
+import FeedbackComponent from "@/components/feedback-popover/feedback-popover";
 // import RectangleToggle from "@/components/rectangle-toggle/rectangle-toggle";
 
 export default function Home() {
@@ -11,7 +12,8 @@ export default function Home() {
       <LoginButton /> */}
       {/* <RectangleToggle /> */}
       {/* <AnimatedModals /> */}
-      <DynamicHeight />
+      {/* <DynamicHeight /> */}
+      <FeedbackComponent />
     </div>
   );
 }
