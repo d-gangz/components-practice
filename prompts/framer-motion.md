@@ -215,3 +215,21 @@ layoutId is very powerful, and it's even more powerful once you become a bit cre
 
  
 Another good takeaway here is that the popLayout mode is often times the right mode for your animations. If you see your exit animation breaking, think about the mode prop.
+
+## Good transition for reducing bounce
+```tsx
+<motion.div
+          layout
+          //This is a good default transition to reduce bounce
+          transition={{ duration: 0.5, type: "spring", bounce: 0 }}
+          className="mt-8 flex justify-between"
+        >
+```
+
+## Use MotionConfig to set the default transition for all the components inside it
+Use it when you want to set a default transition for all the components inside it. 
+
+Note that MotionConfig affects all nested children within its scope, not just the immediate children. It provides configuration options that will be inherited by all motion components within its tree.
+```tsx
+<MotionConfig transition={{ duration: 0.5, type: "spring", bounce: 0 }}>
+```

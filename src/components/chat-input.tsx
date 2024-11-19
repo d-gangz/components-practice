@@ -113,7 +113,7 @@ export default function Component() {
 
   return (
     // Main container card with fixed width and centered alignment
-    <Card className="w-[800px] mx-auto shadow-none border-neutral-200 overflow-hidden">
+    <Card className="w-[800px] mx-auto shadow-none border-neutral-200 overflow-hidden focus-within:ring-1 focus-within:ring-neutral-800">
       <CardContent className="pb-4 px-0">
         <form onSubmit={handleSubmit}>
           {/* Attachment preview section */}
