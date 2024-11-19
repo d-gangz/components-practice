@@ -205,3 +205,13 @@ export function DragExample() {
   );
 }
 ```
+
+## Other tips
+Accessibility
+Even if we replace our placeholder with a span we should still provide a placeholder for the textarea, this is because the placeholder attribute is used by screen readers to provide context to the user. We can hide it visually by setting the opacity to 0.
+
+Key takeaways
+layoutId is very powerful, and it's even more powerful once you become a bit creative with it. In this case, we created an illusion. The placeholder is not an actual placeholder, but it looks like one.
+
+ 
+Another good takeaway here is that the popLayout mode is often times the right mode for your animations. If you see your exit animation breaking, think about the mode prop.
