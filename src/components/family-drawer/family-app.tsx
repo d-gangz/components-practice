@@ -13,6 +13,7 @@ export default function FamilyDrawer() {
   const [view, setView] = useState("default");
   const [elementRef, bounds] = useMeasure();
 
+  // This switch statement is used to render the correct view based on the current view state is quite a smart way to show different content in a modal.
   const content = useMemo(() => {
     switch (view) {
       case "default":
