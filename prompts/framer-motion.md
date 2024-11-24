@@ -206,6 +206,29 @@ export function DragExample() {
 }
 ```
 
+## Anytime you have conditional rendering, use AnimatePresence
+
+```tsx
+<div
+  ref={elementRef}
+  className="px-6 pb-6 pt-2.5 antialiased"
+  style={{ fontFamily: "Open Runde" }}
+>
+  {/* The AnimatePresence component is used to wrap the content so that it can be animated when it changes. Usually when you have conditional rendering, use AnimatePresence. */}
+  <AnimatePresence mode="popLayout">
+    <motion.div
+      initial={{ opacity: 0, scale: 0.96 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.96 }}
+      transition={{ duration: 0.2 }}
+      key={view}
+    >
+      {content}
+    </motion.div>
+  </AnimatePresence>
+</div>
+```
+
 ## Other tips
 Accessibility
 Even if we replace our placeholder with a span we should still provide a placeholder for the textarea, this is because the placeholder attribute is used by screen readers to provide context to the user. We can hide it visually by setting the opacity to 0.

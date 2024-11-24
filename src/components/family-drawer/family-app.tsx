@@ -14,6 +14,7 @@ export default function FamilyDrawer() {
   const [elementRef, bounds] = useMeasure();
 
   // This switch statement is used to render the correct view based on the current view state is quite a smart way to show different content in a modal.
+  // He usually prefer to use the useMemo for conditional rendering.
   const content = useMemo(() => {
     switch (view) {
       case "default":
@@ -63,7 +64,18 @@ export default function FamilyDrawer() {
                 className="px-6 pb-6 pt-2.5 antialiased"
                 style={{ fontFamily: "Open Runde" }}
               >
-                {content}
+                {/* The AnimatePresence component is used to wrap the content so that it can be animated when it changes. Usually when you have conditional rendering, use AnimatePresence. */}
+                <AnimatePresence mode="popLayout">
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.96 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.96 }}
+                    transition={{ duration: 0.2 }}
+                    key={view}
+                  >
+                    {content}
+                  </motion.div>
+                </AnimatePresence>
               </div>
             </motion.div>
           </Drawer.Content>
