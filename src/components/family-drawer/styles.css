@@ -18,3 +18,11 @@
     font-weight: 700;
     font-style: normal;
   }
+
+  [vaul-drawer] {
+    transition: transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1) !important;
+  }
+   
+  [vaul-overlay] {
+    transition: opacity 0.8s cubic-bezier(0.165, 0.84, 0.44, 1) !important;
+  }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { Drawer } from "vaul";
 import useMeasure from "react-use-measure";
 import { motion, AnimatePresence } from "framer-motion";
@@ -12,6 +12,7 @@ export default function FamilyDrawer() {
   const [isOpen, setIsOpen] = useState(false);
   const [view, setView] = useState("default");
   const [elementRef, bounds] = useMeasure();
+  const previousHeightRef = useRef();
 
   // This switch statement is used to render the correct view based on the current view state is quite a smart way to show different content in a modal.
   // He usually prefer to use the useMemo for conditional rendering.
@@ -27,6 +28,29 @@ export default function FamilyDrawer() {
         return <Key setView={setView} />;
     }
   }, [view]);
+
+  // This is a custom hook that calculates the duration of the opacity animation based on the height difference between the previous and current content.
+  const opacityDuration = useMemo(() => {
+    const MIN_DURATION = 0.15;
+    const MAX_DURATION = 0.27;
+
+    if (!previousHeightRef.current) {
+      previousHeightRef.current = bounds.height;
+      return MIN_DURATION;
+    }
+
+    const heightDifference = Math.abs(
+      bounds.height - previousHeightRef.current
+    );
+    previousHeightRef.current = bounds.height;
+
+    const duration = Math.min(
+      Math.max(heightDifference / 500, MIN_DURATION),
+      MAX_DURATION
+    );
+
+    return duration;
+  }, [bounds.height]);
 
   return (
     <>
@@ -70,7 +94,10 @@ export default function FamilyDrawer() {
                     initial={{ opacity: 0, scale: 0.96 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.96 }}
-                    transition={{ duration: 0.2 }}
+                    transition={{
+                      duration: opacityDuration,
+                      ease: [0.26, 0.08, 0.25, 1],
+                    }}
                     key={view}
                   >
                     {content}
